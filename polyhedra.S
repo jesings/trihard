@@ -203,6 +203,18 @@ makesphere:
     push %r15
     call gensphere
     mov $0, %rdx
+    cap:
+    add $4, %rdx
+    vmovupd 32(%rax, %rdx,8), %ymm0
+    vmovupd 1600(%rax, %rdx,8), %ymm2
+    vmovupd 1632(%rax, %rdx,8), %ymm1
+    push %rax
+    push %rdx
+    call addtri
+    pop %rdx
+    pop %rax
+    cmp $200, %rdx
+    jl cap
     twohunnid:
     vmovupd (%rax, %rdx,8), %ymm0
     vmovupd 32(%rax, %rdx,8), %ymm1
@@ -242,8 +254,20 @@ makesphere:
     pop %rax
     add $8, %rdx
     over:
-    cmp $5000, %rdx
+    cmp $4800, %rdx
     jl twohunnid
+    bottom:
+    add $4, %rdx
+    vmovupd (%rax, %rdx,8), %ymm0
+    vmovupd 32(%rax, %rdx,8), %ymm1
+    vmovupd 1600(%rax, %rdx,8), %ymm2
+    push %rax
+    push %rdx
+    call addtri
+    pop %rdx
+    pop %rax
+    cmp $4996, %rdx
+    jl bottom
     mov %rax, %rdi
     call free@PLT
     pop %r15
