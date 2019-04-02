@@ -32,7 +32,7 @@ drawtri://first point in ymm0, second point in ymm1, third point in ymm2
     vmovups viewvect(%rip), %ymm1
     call dotproduct
     vcomisd zero(%rip), %xmm0
-    jbe enddraw
+    jna enddraw
     vmovups (%rsp), %ymm0
     vmovups 32(%rsp), %ymm1
     vmovups 64(%rsp), %ymm2

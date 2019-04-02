@@ -204,8 +204,7 @@ makesphere:
     call gensphere
     mov $0, %rdx
     cap:
-    add $4, %rdx
-    vmovupd 32(%rax, %rdx,8), %ymm0
+    vmovupd (%rax, %rdx,8), %ymm0
     vmovupd 1600(%rax, %rdx,8), %ymm2
     vmovupd 1632(%rax, %rdx,8), %ymm1
     push %rax
@@ -213,8 +212,18 @@ makesphere:
     call addtri
     pop %rdx
     pop %rax
-    cmp $200, %rdx
+    add $4, %rdx
+    cmp $196, %rdx
     jl cap
+    vmovupd (%rax, %rdx,8), %ymm0
+    vmovupd 1600(%rax, %rdx,8), %ymm2
+    vmovupd 32(%rax, %rdx,8), %ymm1
+    push %rax
+    push %rdx
+    call addtri
+    pop %rdx
+    pop %rax
+    add $4, %rdx
     twohunnid:
     vmovupd (%rax, %rdx,8), %ymm0
     vmovupd 32(%rax, %rdx,8), %ymm1
@@ -238,11 +247,14 @@ makesphere:
     vmovupd 64(%rax, %rdx,8), %ymm1
     vmovupd 1632(%rax, %rdx,8), %ymm2
     vmovupd 1664(%rax, %rdx,8), %ymm3
+    cmp $4792, %rdx
+    jge nodont
     push %rax
     push %rdx
     call quadrilateral
     pop %rdx
     pop %rax
+    nodont:
     vmovupd (%rax, %rdx,8), %ymm0
     vmovupd -1568(%rax, %rdx,8), %ymm1
     vmovupd 1600(%rax, %rdx,8), %ymm2
@@ -257,7 +269,6 @@ makesphere:
     cmp $4800, %rdx
     jl twohunnid
     bottom:
-    add $4, %rdx
     vmovupd (%rax, %rdx,8), %ymm0
     vmovupd 32(%rax, %rdx,8), %ymm1
     vmovupd 1600(%rax, %rdx,8), %ymm2
@@ -266,8 +277,15 @@ makesphere:
     call addtri
     pop %rdx
     pop %rax
+    add $4, %rdx
     cmp $4996, %rdx
     jl bottom
+    vmovupd (%rax, %rdx,8), %ymm0
+    vmovupd -1568(%rax, %rdx,8), %ymm1
+    vmovupd 1600(%rax, %rdx,8), %ymm2
+    push %rax
+    call addtri
+    pop %rax
     mov %rax, %rdi
     call free@PLT
     pop %r15
