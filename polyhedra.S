@@ -176,9 +176,8 @@ maketorus:
     push %rax
     push %rdx
     call quadrilateral
-    mov (%rsp), %rdx
-    mov 8(%rsp), %rax
-    xor %rax, %rax
+    mov (%rsp), %rax
+    sar $2, %rax
     xor %rdx, %rdx
     mov $50, %r8
     div %r8
@@ -186,10 +185,19 @@ maketorus:
     pop %rdx
     pop %rax
     add $4, %rdx
-    mov %rdx, %rcx
-    add $4, %rcx
-    cmp $49, %r8
-    cmove %rcx, %rdx
+    cmp $48, %r8
+    jne donetorus
+    vmovupd (%rax, %rdx,8), %ymm0
+    vmovupd -1568(%rax, %rdx,8), %ymm1
+    vmovupd 1600(%rax, %rdx,8), %ymm2
+    vmovupd 32(%rax, %rdx,8), %ymm3
+    push %rax
+    push %rdx
+    call quadrilateral
+    pop %rdx
+    pop %rax
+    add $4, %rdx
+    donetorus:
     cmp $10000, %rdx
     jl twohunnid2
     mov %rax, %rdi

@@ -1,6 +1,7 @@
+executable = 3d
 all: matrix.o draw.o edgy.o prgrid.o bresenham.o manipulations.o parser.o parametric.o polygon.o polyhedra.o vector.o
-	gcc -o 3d draw.o matrix.o edgy.o prgrid.o bresenham.o manipulations.o parser.o parametric.o polygon.o polyhedra.o vector.o -lm -lgcc
-	./3d
+	gcc -o $(executable) draw.o matrix.o edgy.o prgrid.o bresenham.o manipulations.o parser.o parametric.o polygon.o polyhedra.o vector.o -lm -lgcc
+	./$(executable)
 draw.o: draw.S
 	gcc -c -g draw.S
 matrix.o: matrix.S
@@ -23,3 +24,6 @@ polyhedra.o: polyhedra.S
 	gcc -c -g polyhedra.S
 vector.o: vector.S
 	gcc -c -g vector.S
+clean:
+	rm *.o
+	rm $(executable)
